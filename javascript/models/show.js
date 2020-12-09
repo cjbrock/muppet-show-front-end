@@ -23,7 +23,8 @@ class Show {
         showContainer.innerHTML += this.showHTML()
         showHolder.appendChild(showContainer)
         showContainer.addEventListener("click", e => {
-            if (e.target.className === "muppet-button") this.showMupppets(e)
+            if (e.target.className === "muppet-button") this.createMuppets(e)
+            if (e.target.className === "disney-plus-link") this.whateverMethod(e)
         })
     }
 
@@ -36,18 +37,34 @@ class Show {
         <p>Episode number: ${this.episode_number}</p>
         <p>Episode date: ${this.episode_date}</p>
         <p>Is this episode available to watch? ${available}</p>
-        <a href="${this.link}">Watch me!</a><br />
+        <a href="${this.link}" class="disney-plus-link">Watch me!</a><br />
         <button type="button" class="muppet-button" data-id=${this.id}>See the muppets!</button>
          `
     }
 
-    showMuppets(e){
+    createMuppets(e){
+        debugger
+        // find the show id from the dataset = e.target.dataset.id
+        let id = e.target.dataset.id
+        // fetch
+        fetch("http://localhost:3000/shows/${id}/muppets")
+        .then(resp => resp.json())
+        .then(muppets => {
+            muppets.forEach(show => {
+                const{id, name, fur_color, personality, partner, image, show_id} = muppet
+                // create our new associated muppet objects
+                new Muppet(id, name, fur_color, personality, partner, image, show_id)
+            })
+        })
+    }
+        
+
         // initiate a fetch request to the show page of the show in question to get the scoped muppets OR we can initate a fetch request to the muppet controller index method and scope it by the parameter (either way we have to scope it)
         // return the muppets for the show in question
         // create new muppet objects
-        // wipe everything off the page
-        // show the new muppet objects
-        // have a link to go "back" to the homepage
+
+        
+
     }
 
 
